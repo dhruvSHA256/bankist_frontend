@@ -8,6 +8,13 @@ const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const header = document.querySelector(".header");
+const nav = document.querySelector(".nav");
+const tabs = document.querySelectorAll(".operations__tab");
+const tabsContainer = document.querySelector(".operations__tab-container");
+const tabsContent = document.querySelectorAll(".operations__content");
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector("#section--1");
+const navlinks = document.querySelector(".nav__links");
 
 const openModal = function (e) {
     e.preventDefault();
@@ -39,11 +46,7 @@ message.classList.add('cookie-message');
 message.innerHTML =
     'We use cookied for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>';
 header.append(message);
-
 document.querySelector(".btn--close-cookie").addEventListener("click", () => {message.remove();});
-
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector("#section--1");
 
 
 // nav
@@ -52,8 +55,7 @@ btnScrollTo.addEventListener('click', (e) => {
     // window.scrollTo({left: s1coords.left + window.pageXOffset, top: s1coords.top + window.pageYOffset, behavior: "smooth"});
     section1.scrollIntoView({behavior: "smooth"});
 })
-
-document.querySelector(".nav__links").addEventListener('click', function (e) {
+navlinks.addEventListener('click', function (e) {
     e.preventDefault();
     if (e.target.classList.contains('nav__link')) {
         const id = e.target.getAttribute('href');
@@ -63,9 +65,6 @@ document.querySelector(".nav__links").addEventListener('click', function (e) {
 })
 
 // tab component
-const tabs = document.querySelectorAll(".operations__tab");
-const tabsContainer = document.querySelector(".operations__tab-container");
-const tabsContent = document.querySelectorAll(".operations__content");
 tabsContainer.addEventListener('click', function (e) {
     const clicked = e.target.closest(".operations__tab");
     if (!clicked) return;
@@ -74,3 +73,19 @@ tabsContainer.addEventListener('click', function (e) {
     clicked.classList.add("operations__tab--active");
     document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add("operations__content--active");
 })
+
+
+// mouse fade animation
+const handleHover = function (e, opacity) {
+    if (e.target.classList.contains("nav__link")) {
+        const link = e.target;
+        const sibling = link.closest(".nav").querySelectorAll('.nav__link')
+        const logo = link.closest('.nav').querySelector('img');
+        sibling.forEach(function (el) {
+            if (el !== link) el.style.opacity = opacity;
+        });
+        logo.style.opacity = opacity;
+    }
+}
+nav.addEventListener('mouseover', e => handleHover(e, 0.5));
+nav.addEventListener('mouseout', e => handleHover(e, 1));

@@ -89,3 +89,25 @@ const handleHover = function (e, opacity) {
 }
 nav.addEventListener('mouseover', e => handleHover(e, 0.5));
 nav.addEventListener('mouseout', e => handleHover(e, 1));
+
+
+// sticky nav
+// bad implementation
+// const initCoordinates = section1.getBoundingClientRect();
+// window.addEventListener('scroll', function () {
+//     if (window.scrollY > initCoordinates.top) nav.classList.add("sticky"); else nav.classList.remove("sticky");
+// })
+const navHeight = nav.getBoundingClientRect().height;
+const observerOpts = {
+    root: null,
+    threshold: 0,
+    rootMargin: `-${navHeight}px`,
+};
+const stickyNav = function (entries) {
+    const [entry] = entries;
+    if (!entry.isIntersecting) nav.classList.add('sticky');
+    else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, observerOpts);
+headerObserver.observe(header);
